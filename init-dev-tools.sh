@@ -1,6 +1,8 @@
 #!/bin/bash
 
 GREEN='\033[0;32m'  # ANSI color code for green
+YELLOW='\033[0;33m' # ANSI color code for yellow
+RED='\033[0;31m'    # ANSI color code for red
 NC='\033[0m'        # No color / reset ANSI code
 
 # Function to check the success of the last command
@@ -13,9 +15,25 @@ check_command() {
     fi
 }
 
+# Ask for sudo upfront
+echo -e "${GREEN}This script requires sudo privileges. Please enter your password.${NC}"
+sudo -v
+check_command
+echo ""
+
 # Update package list
 echo -e "${GREEN}Updating package list...${NC}"
-sudo apt update
+sudo apt update -y
+check_command
+sudo apt upgrade -y
+check_command
+echo ""
+
+sleep 1
+
+# Install Curl
+echo -e "${GREEN}Installing Curl...${NC}"
+sudo apt install -y curl
 check_command
 echo ""
 
@@ -24,6 +42,22 @@ sleep 1
 # Install Git
 echo -e "${GREEN}Installing Git...${NC}"
 sudo apt install -y git
+check_command
+echo ""
+
+sleep 1
+
+# Configure Git
+echo "Configuring Git..."
+git config --global user.name "Atilla"
+git config --global user.email "atilla.coelgecen@optimizemyday.com"
+check_command
+
+sleep 1
+
+# Install build-essential
+echo -e "${GREEN}Installing build-essential...${NC}"
+sudo apt install -y build-essential
 check_command
 echo ""
 
@@ -76,9 +110,9 @@ sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/
 echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
 rm -f packages.microsoft.gpg
 
-sudo apt install apt-transport-https
+sudo apt install -y apt-transport-https
 sudo apt update
-sudo apt install code
+sudo apt install -y code
 check_command
 echo ""
 
@@ -89,11 +123,7 @@ echo ""
 
 sleep 1
 
-# Prompt for reboot
-read -p "Do you want to reboot your system now? (y/n): " answer
-if [[ "$answer" =~ ^[Yy]$ ]]; then
-    echo -e "${GREEN}Rebooting the system...${NC}"
-    sudo reboot
-else
-    echo -e "${GREEN}Please reboot your system later to apply changes.${NC}"
-fi
+# Prompt to reboot
+read -p "Press any key to reboot your system now, or Ctrl+C to cancel..." -n1 -s
+echo -e "\nRebooting the system..."
+sudo reboot
