@@ -98,14 +98,16 @@ echo ""
 
 # Preparing SSH folder and files
 echo -e "${YELLOW}Preparing SSH folder and files${NOCOLOR}"
-sudo mkdir .ssh
-touch ~/.ssh/id_rsa
-touch ~/.ssh/id_rsa.pub
-touch ~/.ssh/config
 
-chmod 600 ~/.ssh/id_rsa
-chmod 600 ~/.ssh/id_rsa.pub
+sudo mkdir $HOME/.ssh
+sudo touch $HOME/.ssh/id_rsa
+sudo touch $HOME/.ssh/id_rsa.pub
+sudo touch $HOME/.ssh/config
 
+sudo chmod 600 ~/.ssh/id_rsa
+sudo chmod 600 ~/.ssh/id_rsa.pub
+check_command
+echo ""
 
 # Clean up unused packages
 echo -e "${YELLOW}Cleaning up unused packages...${NOCOLOR}"
@@ -127,6 +129,6 @@ echo ""
 
 
 # Prompt to reboot
-read -p "Press any key to reboot your system now, or Ctrl+C to caNOCOLORel..." -n1 -s
+read -p "Press any key to reboot your system now, or Ctrl+C to cancel..." -n1 -s
 echo -e "\nRebooting the system..."
 sudo reboot
