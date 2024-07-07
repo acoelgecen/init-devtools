@@ -96,6 +96,34 @@ check_command
 echo ""
 
 
+# Import Vivaldi GPG key
+echo -e "${YELLOW}Importing Vivaldi GPG key...${NOCOLOR}"
+wget -qO- http://repo.vivaldi.com/stable/linux_signing_key.pub | sudo apt-key add -
+check_command
+echo ""
+
+
+# Update apt cache
+echo -e "${YELLOW}Updating apt cache...${NOCOLOR}"
+sudo apt update
+check_command
+echo ""
+
+
+# Install Vivaldi browser
+echo -e "${YELLOW}Installing Vivaldi browser...${NOCOLOR}"
+sudo apt install -y vivaldi-stable
+check_command
+echo ""
+
+
+# Removing FireFox Browser
+echo -e "${YELLOW}Removing FireFox Browser...${NOCOLOR}"
+sudo snap remove firefox
+check_command
+echo ""
+
+
 # Preparing SSH folder and files
 echo -e "${YELLOW}Preparing SSH folder and files${NOCOLOR}"
 
@@ -132,3 +160,8 @@ echo ""
 read -p "Press any key to reboot your system now, or Ctrl+C to cancel..." -n1 -s
 echo -e "\nRebooting the system..."
 sudo reboot
+
+
+
+
+
