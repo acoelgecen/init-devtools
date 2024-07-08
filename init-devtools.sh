@@ -48,8 +48,8 @@ echo ""
 
 # Configure Git
 echo "Configuring Git..."
-git config --global user.name ""
-git config --global user.email ""
+git config --global user.name "atilla"
+git config --global user.email "atillacolgecen@gmail.com"
 check_command
 echo ""
 
