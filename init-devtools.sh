@@ -102,17 +102,21 @@ wget -qO- http://repo.vivaldi.com/stable/linux_signing_key.pub | sudo apt-key ad
 check_command
 echo ""
 
-
 # Update apt cache
 echo -e "${YELLOW}Updating apt cache...${NOCOLOR}"
 sudo apt update
 check_command
 echo ""
 
+# Download Vivaldi package 
+echo -e "${YELLOW}Downloading Vivaldi package to /tmp...${NOCOLOR}"
+wget -qO /tmp/vivaldi.deb https://downloads.vivaldi.com/stable/vivaldi-stable_4.1.2369.21-1_amd64.deb
+check_command
+echo ""
 
-# Install Vivaldi browser
-echo -e "${YELLOW}Installing Vivaldi browser...${NOCOLOR}"
-sudo apt install -y vivaldi-stable
+# Install Vivaldi 
+echo -e "${YELLOW}Installing Vivaldi from /tmp...${NOCOLOR}"
+sudo apt install -y /tmp/vivaldi.deb
 check_command
 echo ""
 
@@ -134,6 +138,14 @@ sudo touch $HOME/.ssh/config
 
 sudo chmod 600 ~/.ssh/id_rsa
 sudo chmod 600 ~/.ssh/id_rsa.pub
+check_command
+echo ""
+
+# Update package list
+echo -e "${YELLOW}Updating package list...${NOCOLOR}"
+sudo apt update -y
+check_command
+sudo apt upgrade -y
 check_command
 echo ""
 
