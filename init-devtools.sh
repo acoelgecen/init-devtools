@@ -48,8 +48,8 @@ echo ""
 
 # Configure Git
 echo "Configuring Git..."
-git config --global user.name ""
-git config --global user.email ""
+git config --global user.name "atilla"
+git config --global user.email "atillacolgecen@gmail.com"
 check_command
 echo ""
 
@@ -127,19 +127,6 @@ sudo snap remove firefox
 check_command
 echo ""
 
-
-# Preparing SSH folder and files
-echo -e "${YELLOW}Preparing SSH folder and files${NOCOLOR}"
-
-sudo mkdir $HOME/.ssh
-sudo touch $HOME/.ssh/id_rsa
-sudo touch $HOME/.ssh/id_rsa.pub
-sudo touch $HOME/.ssh/config
-
-sudo chmod 600 ~/.ssh/id_rsa
-sudo chmod 600 ~/.ssh/id_rsa.pub
-check_command
-echo ""
 
 # Update package list
 echo -e "${YELLOW}Updating package list...${NOCOLOR}"
