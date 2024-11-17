@@ -52,6 +52,12 @@ git config --global user.email "$user_email"
 check_command
 echo ""
 
+# Install KeePassXC
+echo -e "${YELLOW}Installing KeePassXC...${NOCOLOR}"
+sudo apt install -y keepassxc
+check_command
+echo ""
+
 # Create SSH Folder and Files
 echo -e "${YELLOW}Creating SSH folder and files...${NOCOLOR}"
 mkdir -p ~/.ssh
@@ -72,12 +78,6 @@ echo ""
 # Install build-essential
 echo -e "${YELLOW}Installing build-essential...${NOCOLOR}"
 sudo apt install -y build-essential
-check_command
-echo ""
-
-# Install KeePassXC
-echo -e "${YELLOW}Installing KeePassXC...${NOCOLOR}"
-sudo apt install -y keepassxc
 check_command
 echo ""
 
