@@ -29,13 +29,13 @@ sudo apt upgrade -y
 check_command
 echo ""
 
-# Install Curl
+# installing Curl
 echo -e "${YELLOW}Installing Curl...${NOCOLOR}"
 sudo apt install -y curl
 check_command
 echo ""
 
-# Install Git
+# installing Git
 echo -e "${YELLOW}Installing Git...${NOCOLOR}"
 sudo apt install -y git
 check_command
@@ -52,9 +52,15 @@ git config --global user.email "$user_email"
 check_command
 echo ""
 
-# Install KeePassXC
+# installing KeePassXC
 echo -e "${YELLOW}Installing KeePassXC...${NOCOLOR}"
 sudo apt install -y keepassxc
+check_command
+echo ""
+
+# Creating source folder
+echo -e "${YELLOW}Creating source folder...${NOCOLOR}" 
+mkdir -p ~/source
 check_command
 echo ""
 
@@ -75,13 +81,13 @@ echo "$rsa_public_key" > ~/.ssh/id_rsa.pub
 check_command
 echo ""
 
-# Install build-essential
+# installing build-essential
 echo -e "${YELLOW}Installing build-essential...${NOCOLOR}"
 sudo apt install -y build-essential
 check_command
 echo ""
 
-# Install Ansible
+# installing Ansible
 echo -e "${YELLOW}Installing Ansible...${NOCOLOR}"
 sudo apt install -y ansible
 check_command
@@ -93,7 +99,7 @@ sudo apt upgrade -y
 check_command
 echo ""
 
-# Install Visual Studio Code repository and application
+# installing Visual Studio Code repository and application
 echo -e "${YELLOW}Installing Visual Studio Code...${NOCOLOR}"
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
@@ -124,7 +130,7 @@ wget -qO /tmp/vivaldi.deb https://downloads.vivaldi.com/stable/vivaldi-stable_4.
 check_command
 echo ""
 
-# Install Vivaldi 
+# installing Vivaldi 
 echo -e "${YELLOW}Installing Vivaldi from /tmp...${NOCOLOR}"
 sudo apt install -y /tmp/vivaldi.deb
 check_command
