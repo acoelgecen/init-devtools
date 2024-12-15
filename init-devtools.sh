@@ -74,7 +74,7 @@ chmod 600 ~/.ssh/id_rsa
 check_command
 echo ""
 
-# Prompt for the RSA public key and add it to id_rsa.pub
+# Prompt for the RSA public key 
 echo -e "${YELLOW}Please enter your RSA public key.${NOCOLOR}"
 read -p "Enter your RSA public key: " rsa_public_key
 echo "$rsa_public_key" > ~/.ssh/id_rsa.pub

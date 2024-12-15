@@ -22,8 +22,8 @@ This Bash script automates the process of setting up a development environment b
 This script should run first, afterwards you can run `init-gnome`.
 
 # Mega Script
-This script is easily to copy ssh public from mega to local machine. 
-Make sure that you check the correct version of the ubuntu in de `wget`and `sudo`command. 
+This script is easily to copy ssh public from mega to local machine with out prompt. 
+Just replace the script with `# Prompt for the RSA public key` and make sure that you check the correct version of the ubuntu in de `wget` and `sudo` command. 
 
 ```bash
 # Mega SSH
