@@ -27,8 +27,8 @@ Just replace the script with `# Prompt for the RSA public key` and make sure tha
 
 ```bash
 # Mega SSH
-wget https://mega.nz/linux/repo/xUbuntu_24.04/amd64/megacmd-xUbuntu_24.04_amd64.deb
-sudo apt install "$PWD/megacmd-xUbuntu_24.04_amd64.deb"
+wget -O /tmp/megacmd-xUbuntu_24.04_amd64.deb https://mega.nz/linux/repo/xUbuntu_24.04/amd64/megacmd-xUbuntu_24.04_amd64.deb
+sudo apt install /tmp/megacmd-xUbuntu_24.04_amd64.deb
 mega-login [mail] '[password]'
 mega-get auth_keys/auth_keys.txt /tmp/
 cp /tmp/auth_keys.txt ~/.ssh/id_rsa.pub
