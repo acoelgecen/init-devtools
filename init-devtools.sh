@@ -112,36 +112,6 @@ sudo apt install -y code
 check_command
 echo ""
 
-# Import Vivaldi GPG key
-echo -e "${YELLOW}Importing Vivaldi GPG key...${NOCOLOR}"
-wget -qO- http://repo.vivaldi.com/stable/linux_signing_key.pub | sudo apt-key add -
-check_command
-echo ""
-
-# Update apt cache
-echo -e "${YELLOW}Updating apt cache...${NOCOLOR}"
-sudo apt update
-check_command
-echo ""
-
-# Download Vivaldi package 
-echo -e "${YELLOW}Downloading Vivaldi package to /tmp...${NOCOLOR}"
-wget -qO /tmp/vivaldi.deb https://downloads.vivaldi.com/stable/vivaldi-stable_4.1.2369.21-1_amd64.deb
-check_command
-echo ""
-
-# installing Vivaldi 
-echo -e "${YELLOW}Installing Vivaldi from /tmp...${NOCOLOR}"
-sudo apt install -y /tmp/vivaldi.deb
-check_command
-echo ""
-
-# Removing FireFox Browser
-echo -e "${YELLOW}Removing FireFox Browser...${NOCOLOR}"
-sudo snap remove firefox
-check_command
-echo ""
-
 # Update package list
 echo -e "${YELLOW}Updating package list...${NOCOLOR}"
 sudo apt update -y
