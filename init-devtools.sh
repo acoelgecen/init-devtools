@@ -75,11 +75,23 @@ check_command
 echo ""
 
 # Prompt for the RSA public key 
-echo -e "${YELLOW}Please enter your RSA public key.${NOCOLOR}"
+echo -e "${YELLOW}Please enter your RSA Public key.${NOCOLOR}"
 read -p "Enter your RSA public key: " rsa_public_key
 echo "$rsa_public_key" > ~/.ssh/id_rsa.pub
 check_command
 echo ""
+
+# Prompt for the RSA Private key 
+echo -e "${YELLOW}Please enter your RSA Private key.${NOCOLOR}"
+read -p "Enter your RSA private key: " rsa_private_key
+echo "$rsa_private_key" > ~/.ssh/id_rsa
+check_command
+echo ""
+
+# Adding SSH content
+echo -e "${YELLOW}Adding SSH Keys.${NOCOLOR}"
+ssh-add ~/.ssh/id_rsa
+check_command
 
 # installing build-essential
 echo -e "${YELLOW}Installing build-essential...${NOCOLOR}"
