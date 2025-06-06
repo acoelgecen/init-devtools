@@ -21,7 +21,7 @@ sudo -v
 check_command
 echo ""
 
-# Update package list
+# Update and upgrade packages
 echo -e "${YELLOW}Updating package list...${NOCOLOR}"
 sudo apt update -y
 check_command
@@ -29,89 +29,91 @@ sudo apt upgrade -y
 check_command
 echo ""
 
-# installing Curl
+# Install essential packages
 echo -e "${YELLOW}Installing Curl...${NOCOLOR}"
 sudo apt install -y curl
 check_command
 echo ""
 
-# installing Git
 echo -e "${YELLOW}Installing Git...${NOCOLOR}"
 sudo apt install -y git
 check_command
 echo ""
 
-# Prompt for Git user.name and user.email
-echo -e "${YELLOW}Please enter your Git configuration details.${NOCOLOR}"
-read -p "Enter Git user name: " user_name
-read -p "Enter Git user email: " user_email
+# Git configuration
+git_user_name=$(git config --global user.name)
+git_user_email=$(git config --global user.email)
 
-echo -e "${YELLOW}Configuring Git...${NOCOLOR}"
-git config --global user.name "$user_name"
-git config --global user.email "$user_email"
-check_command
+if [ -z "$git_user_name" ] || [ -z "$git_user_email" ]; then
+    echo -e "${YELLOW}Git global configuration not found. Please enter your Git configuration details.${NOCOLOR}"
+    
+    read -p "Enter Git user name: " user_name
+    read -p "Enter Git user email: " user_email
+
+    echo -e "${YELLOW}Configuring Git...${NOCOLOR}"
+    git config --global user.name "$user_name"
+    git config --global user.email "$user_email"
+    check_command
+else
+    echo -e "${GREEN}Git is already configured:${NOCOLOR}"
+    echo -e "  ${YELLOW}User Name:${NOCOLOR} $git_user_name"
+    echo -e "  ${YELLOW}User Email:${NOCOLOR} $git_user_email"
+fi
 echo ""
 
-# installing KeePassXC
+# KeePassXC Installation
 echo -e "${YELLOW}Installing KeePassXC...${NOCOLOR}"
 sudo apt install -y keepassxc
 check_command
 echo ""
 
-# Creating source folder
+# Source folder
 echo -e "${YELLOW}Creating source folder...${NOCOLOR}" 
 mkdir -p ~/source
 check_command
 echo ""
 
-# Create SSH Folder and Files
-echo -e "${YELLOW}Creating SSH folder and files...${NOCOLOR}"
+# SSH configuration
+echo -e "${YELLOW}Configuring SSH keys...${NOCOLOR}"
 mkdir -p ~/.ssh
-touch ~/.ssh/id_rsa.pub
-chmod 644 ~/.ssh/id_rsa.pub
-touch ~/.ssh/id_rsa
-chmod 600 ~/.ssh/id_rsa
-check_command
+chmod 700 ~/.ssh
+
+if [[ -f ~/.ssh/id_rsa && -f ~/.ssh/id_rsa.pub ]]; then
+    echo -e "${GREEN}SSH key pair already exists. Skipping key creation.${NOCOLOR}"
+else
+    echo -e "${YELLOW}No existing SSH keys found. Proceeding with key input...${NOCOLOR}"
+
+    read -p "Enter your RSA public key (single line): " rsa_public_key
+    echo "$rsa_public_key" > ~/.ssh/id_rsa.pub
+    chmod 644 ~/.ssh/id_rsa.pub
+    check_command
+    echo ""
+
+    echo -e "${YELLOW}Paste your RSA PRIVATE KEY (end with an empty line, then press Ctrl+D):${NOCOLOR}"
+    cat > ~/.ssh/id_rsa
+    check_command
+    chmod 600 ~/.ssh/id_rsa
+    echo ""
+
+    echo -e "${YELLOW}Adding SSH private key to the agent...${NOCOLOR}"
+    eval "$(ssh-agent -s)"
+    ssh-add ~/.ssh/id_rsa
+    check_command
+fi
 echo ""
 
-# Prompt for the RSA public key 
-echo -e "${YELLOW}Please enter your RSA Public key.${NOCOLOR}"
-read -p "Enter your RSA public key: " rsa_public_key
-echo "$rsa_public_key" > ~/.ssh/id_rsa.pub
-check_command
-echo ""
-
-# Prompt for the RSA Private key 
-echo -e "${YELLOW}Please enter your RSA Private key.${NOCOLOR}"
-read -p "Enter your RSA private key: " rsa_private_key
-echo "$rsa_private_key" > ~/.ssh/id_rsa
-check_command
-echo ""
-
-# Adding SSH content
 echo -e "${YELLOW}Adding SSH Keys.${NOCOLOR}"
 ssh-add ~/.ssh/id_rsa
 check_command
+echo ""
 
-# installing build-essential
+# Development tools
 echo -e "${YELLOW}Installing build-essential...${NOCOLOR}"
 sudo apt install -y build-essential
 check_command
 echo ""
 
-# installing Ansible
-echo -e "${YELLOW}Installing Ansible...${NOCOLOR}"
-sudo apt install -y ansible
-check_command
-echo ""
-
-# Upgrade all packages to the latest version
-echo -e "${YELLOW}Upgrading all packages...${NOCOLOR}"
-sudo apt upgrade -y
-check_command
-echo ""
-
-# installing Visual Studio Code repository and application
+# VS Code installation
 echo -e "${YELLOW}Installing Visual Studio Code...${NOCOLOR}"
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
@@ -124,22 +126,45 @@ sudo apt install -y code
 check_command
 echo ""
 
-# Update package list
-echo -e "${YELLOW}Updating package list...${NOCOLOR}"
-sudo apt update -y
-check_command
-sudo apt upgrade -y
+# Python & Ansible Environment Setup
+echo -e "${YELLOW}Installing Python and tools...${NOCOLOR}"
+sudo apt install -y python3 python3-pip python3-setuptools python3-venv
 check_command
 echo ""
 
-# Clean up unused packages
-echo -e "${YELLOW}Cleaning up unused packages...${NOCOLOR}"
+echo -e "${YELLOW}Creating python-envs folder...${NOCOLOR}"
+mkdir -p ~/python-envs
+check_command
+cd ~/python-envs
+echo ""
+
+echo -e "${YELLOW}Creating ansible-env virtual environment...${NOCOLOR}"
+python3 -m venv ansible-env
+check_command
+echo ""
+
+echo -e "${YELLOW}Activating ansible-env...${NOCOLOR}"
+source ~/python-envs/ansible-env/bin/activate
+check_command
+echo ""
+
+echo -e "${YELLOW}Installing Ansible-related Python packages...${NOCOLOR}"
+pip install --upgrade pip
+pip install boto3 botocore jmespath ansible paramiko pyyaml
+check_command
+echo ""
+
+echo -e "${GREEN}Ansible environment setup complete.${NOCOLOR}"
+echo ""
+
+echo -e "${YELLOW}Deactivating ansible-env...${NOCOLOR}"
+deactivate
+echo ""
+
+# Final cleanup
+echo -e "${YELLOW}Cleaning up...${NOCOLOR}"
 sudo apt autoremove -y
 check_command
-echo ""
-
-# Clean up apt cache
-echo -e "${YELLOW}Cleaning up apt cache...${NOCOLOR}"
 sudo apt clean
 check_command
 echo ""
