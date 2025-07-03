@@ -104,24 +104,19 @@ else
         echo -e "${RED}Private key file not found. Please try again.${NOCOLOR}"
         exit 1
     fi
-    echo ""
-fi
 
-# Start SSH agent and add keys (only if keys exist)
-if [[ -f ~/.ssh/id_rsa ]]; then
-    echo -e "${YELLOW}Starting SSH agent and adding keys...${NOCOLOR}"
-    
-    # Check if ssh-agent is already running
-    if [ -z "$SSH_AUTH_SOCK" ]; then
-        eval "$(ssh-agent -s)"
-    fi
-    
-    # Add the key to the agent
-    ssh-add ~/.ssh/id_rsa 2>/dev/null || echo -e "${YELLOW}SSH key already loaded or couldn't be added to agent.${NOCOLOR}"
-    echo -e "${GREEN}SSH configuration complete.${NOCOLOR}"
-else
-    echo -e "${YELLOW}No SSH private key found. Skipping SSH agent configuration.${NOCOLOR}"
+    echo ""
+
+    echo -e "${YELLOW}Adding SSH private key to the agent...${NOCOLOR}"
+    eval "$(ssh-agent -s)"
+    ssh-add ~/.ssh/id_rsa
+    check_command
 fi
+echo ""
+
+echo -e "${YELLOW}Adding SSH Keys.${NOCOLOR}"
+ssh-add ~/.ssh/id_rsa
+check_command
 echo ""
 
 # Development tools
