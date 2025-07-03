@@ -89,10 +89,22 @@ else
     check_command
     echo ""
 
-    echo -e "${YELLOW}Paste your RSA PRIVATE KEY (end with an empty line, then press Ctrl+D):${NOCOLOR}"
-    cat > ~/.ssh/id_rsa
-    check_command
-    chmod 600 ~/.ssh/id_rsa
+    echo -e "${YELLOW}Please paste your RSA PRIVATE KEY into a temporary file.${NOCOLOR}"
+    echo -e "${YELLOW}Opening nano editor - paste your key, then press Ctrl+X, Y, Enter to save.${NOCOLOR}"
+    read -p "Press Enter to continue..."
+    
+    nano ~/.ssh/id_rsa_temp
+    
+    if [ -f ~/.ssh/id_rsa_temp ]; then
+        mv ~/.ssh/id_rsa_temp ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        check_command
+        echo -e "${GREEN}Private key saved successfully.${NOCOLOR}"
+    else
+        echo -e "${RED}Private key file not found. Please try again.${NOCOLOR}"
+        exit 1
+    fi
+
     echo ""
 
     echo -e "${YELLOW}Adding SSH private key to the agent...${NOCOLOR}"
