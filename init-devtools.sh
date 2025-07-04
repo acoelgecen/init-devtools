@@ -144,10 +144,10 @@ sudo apt install -y python3 python3-pip python3-setuptools python3-venv
 check_command
 echo ""
 
-echo -e "${YELLOW}Creating python-envs folder...${NOCOLOR}"
-mkdir -p ~/python-envs
+echo -e "${YELLOW}Creating python-environment folder...${NOCOLOR}"
+mkdir -p ~/python-environment
 check_command
-cd ~/python-envs
+cd ~/python-environment
 echo ""
 
 echo -e "${YELLOW}Creating ansible-env virtual environment...${NOCOLOR}"
@@ -156,7 +156,7 @@ check_command
 echo ""
 
 echo -e "${YELLOW}Activating ansible-env...${NOCOLOR}"
-source ~/python-envs/ansible-env/bin/activate
+source ~/python-environment/ansible-env/bin/activate
 check_command
 echo ""
 
