@@ -104,13 +104,6 @@ else
         echo -e "${RED}Private key file not found. Please try again.${NOCOLOR}"
         exit 1
     fi
-
-    echo ""
-
-    echo -e "${YELLOW}Adding SSH private key to the agent...${NOCOLOR}"
-    eval "$(ssh-agent -s)"
-    ssh-add ~/.ssh/id_rsa
-    check_command
 fi
 echo ""
 
