@@ -79,7 +79,7 @@ mkdir -p ~/.ssh
 chmod 700 ~/.ssh
 
 if [[ -f ~/.ssh/id_rsa && -f ~/.ssh/id_rsa.pub ]]; then
-    echo -e "${GREEN}SSH key pair already exists. Skipping key creation.${NOCOLOR}"
+    echo -e "${GREEN}SSH key pair already exists. Skipping key creation and ssh-add.${NOCOLOR}"
 else
     echo -e "${YELLOW}No existing SSH keys found. Proceeding with key input...${NOCOLOR}"
 
@@ -104,9 +104,18 @@ else
         echo -e "${RED}Private key file not found. Please try again.${NOCOLOR}"
         exit 1
     fi
+
+    echo ""
+    echo -e "${YELLOW}Adding SSH private key to the agent...${NOCOLOR}"
+    eval "$(ssh-agent -s)"
+    ssh-add ~/.ssh/id_rsa
+    check_command
+    echo ""
 fi
+
 echo ""
 
+# SSH KEY ADDING
 echo -e "${YELLOW}Adding SSH Keys.${NOCOLOR}"
 ssh-add ~/.ssh/id_rsa
 check_command
@@ -120,16 +129,25 @@ echo ""
 
 # VS Code installation
 echo -e "${YELLOW}Installing Visual Studio Code...${NOCOLOR}"
-wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-sudo install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
-echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
-rm -f packages.microsoft.gpg
 
-sudo apt install -y apt-transport-https
-sudo apt update
-sudo apt install -y code
-check_command
+if ! command -v code &> /dev/null; then
+    # Only add repo if not already installed
+    if [ ! -f /etc/apt/sources.list.d/vscode.list ]; then
+        wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+        sudo install -D -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/microsoft.gpg
+        echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
+        rm -f packages.microsoft.gpg
+    fi
+
+    sudo apt install -y apt-transport-https
+    sudo apt update
+    sudo apt install -y code
+    check_command
+else
+    echo -e "${GREEN}VS Code is already installed. Skipping repo setup and installation.${NOCOLOR}"
+fi
 echo ""
+
 
 # Python & Ansible Environment Setup
 echo -e "${YELLOW}Installing Python and tools...${NOCOLOR}"
