@@ -113,14 +113,6 @@ else
     echo ""
 fi
 
-echo ""
-
-# SSH KEY ADDING
-echo -e "${YELLOW}Adding SSH Keys.${NOCOLOR}"
-ssh-add ~/.ssh/id_rsa
-check_command
-echo ""
-
 # Development tools
 echo -e "${YELLOW}Installing build-essential...${NOCOLOR}"
 sudo apt install -y build-essential
