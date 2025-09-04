@@ -21,10 +21,14 @@ sudo -v
 check_command
 echo ""
 
-# Update and upgrade packages
+# Update packages
 echo -e "${YELLOW}Updating package list...${NOCOLOR}"
 sudo apt update -y
 check_command
+echo ""
+
+# Upgrading packages
+echo -e "${YELLOW}Upgrading package list...${NOCOLOR}"
 sudo apt upgrade -y
 check_command
 echo ""
@@ -113,12 +117,6 @@ else
     echo ""
 fi
 
-echo ""
-
-# SSH KEY ADDING
-echo -e "${YELLOW}Adding SSH Keys.${NOCOLOR}"
-ssh-add ~/.ssh/id_rsa
-check_command
 echo ""
 
 # Development tools
