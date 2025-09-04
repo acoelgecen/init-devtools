@@ -117,11 +117,6 @@ else
     echo ""
 fi
 
-<<<<<<< HEAD
-echo ""
-
-=======
->>>>>>> c0b12d8a8edade26520c2478118bc41c476992a7
 # Development tools
 echo -e "${YELLOW}Installing build-essential...${NOCOLOR}"
 sudo apt install -y build-essential
