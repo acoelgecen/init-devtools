@@ -169,7 +169,7 @@ echo ""
 
 echo -e "${YELLOW}Installing Ansible-related Python packages...${NOCOLOR}"
 pip install --upgrade pip
-pip install boto3 botocore jmespath ansible paramiko pyyaml ansible-lint molecule molecule-docker yamllint
+pip install boto3 botocore jmespath ansible paramiko pyyaml ansible-lint molecule molecule-docker yamllint requests docker kubernetes passlib netaddr dnspython cryptography
 check_command
 echo ""
 
